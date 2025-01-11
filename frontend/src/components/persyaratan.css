@@ -1,0 +1,52 @@
+.persyaratan-card {
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.Pdfviewer {
+    width: 100%;
+    height: 500px; /* Adjust the height as needed */
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.persyaratan-list {
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.persyaratan-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+h2 {
+    font-weight: bold;
+    color: #000;
+}
+
+h5 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.download-list {
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.download-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.download-list a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.download-list a:hover {
+    text-decoration: underline;
+}

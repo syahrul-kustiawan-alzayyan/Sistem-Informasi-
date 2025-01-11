@@ -1,0 +1,22 @@
+.faq-accordion .card {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: #e9ecef;
+}
+
+.faq-answer {
+    background-color: #ffffff;
+    padding: 15px;
+}

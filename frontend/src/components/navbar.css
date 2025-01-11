@@ -1,0 +1,55 @@
+/* Custom Navbar Styles */
+.navbar-custom {
+  background-color: #ffffff;
+  display: flex;
+  align-items: end;
+  padding: 10px 20px;
+}
+
+.navbar-brand-custom {
+  display: flex;
+  align-items: start;
+  margin-right: auto; /* Pastikan logo berada di kiri */
+}
+
+.navbar-logo {
+  width: 150px;
+  margin-right: 10px;
+}
+
+.nav-link-custom {
+  font-weight: bold;
+  color: #000;
+  margin-left: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  align-items: end;
+}
+
+.navigasi{
+  align-content: end;
+
+}
+.nav-link-custom:hover {
+  color: #003110;
+}
+
+.active-link {
+  color: #012914;
+  border-bottom: 2px solid #034d26;
+}
+
+.button {
+  background-color: #032908;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 20px;
+  margin-left: 15px;
+}
+
+.button:hover {
+  background-color: #055410;
+}

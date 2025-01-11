@@ -1,0 +1,55 @@
+.step-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1c3f94;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  
+  .step-image {
+    max-width: 200px; /* Adjusted image size */
+    height: auto;
+    margin: 0 auto; /* Center image */
+  }
+  
+  .card-title {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .step-description {
+    padding-left: 20px; /* Indent bullet points */
+  }
+  
+  .step-description li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 20px;
+  }
+  
+  .step-description li::before {
+    content: '•'; /* Add bullet point */
+    position: absolute;
+    left: 0;
+    color: #1c3f94; /* Bullet point color matching step number background */
+    font-size: 20px; /* Adjust bullet size */
+  }
+  
+  h2 {
+    font-weight: bold;
+    color: #000;
+  }
+  

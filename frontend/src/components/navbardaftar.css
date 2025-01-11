@@ -1,0 +1,55 @@
+/* Style untuk Navbar */
+.navbar-custom {
+    background-color: white;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk efek lebih menarik */
+  }
+  
+  /* Style untuk Logo */
+  .navbar-logo img {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+  }
+  
+  /* Style untuk Tombol Status Pengajuan */
+  .status-button {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #28a745; /* Warna hijau */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+  
+  .status-button:hover {
+    background-color: #218838; /* Warna hijau lebih gelap saat hover */
+  }
+  
+  /* Media Query untuk Responsivitas */
+  @media (max-width: 768px) {
+    .navbar-custom {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+    }
+  
+    .navbar-logo img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
+  
+    .status-button {
+      font-size: 14px;
+      padding: 6px 12px;
+      width: 100%; /* Tombol akan memenuhi lebar navbar pada layar kecil */
+      text-align: center;
+    }
+  }
+  

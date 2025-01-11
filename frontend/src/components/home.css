@@ -1,0 +1,31 @@
+.home-background {
+  background-image: url('../assets/Kementrian_Agama.png');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  height: 100%;
+}
+
+.home-row {
+  width: 100%;
+}
+
+.home-button {
+  background-color: #00330B;
+  border: none;
+  position: absolute;
+  bottom: 65px; /* Adjust the distance from the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  size: lg;
+}

@@ -1,0 +1,51 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #00330B; /* Update this color if needed */
+}
+
+.footer-logo-section {
+  flex: 1;
+}
+
+.footer-logo {
+  max-width: 300px;
+}
+
+.footer-info {
+  flex: 2;
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff; /* Set text color to white */
+}
+
+.footer-text {
+  display: flex;
+  align-items: flex-start;
+}
+
+.footer-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #ffffff; /* Set icon color to white */
+}
+
+.footer-address,
+.footer-contact-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-address span,
+.footer-contact-item span {
+  font-weight: bold;
+  color: #ffffff; /* Set label text color to white */
+}
+
+.footer-address p,
+.footer-contact-item p {
+  margin: 0;
+  color: #ffffff; /* Set content text color to white */
+}

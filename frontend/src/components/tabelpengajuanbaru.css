@@ -1,0 +1,30 @@
+.table-container {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    min-width: 1500px; /* Ensure the table is wider than the screen to allow scrolling */
+  }
+  
+  .fixed-left {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 2;
+    white-space: nowrap;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fixed-left.validasi-column {
+    position: sticky;
+    left: 200px; /* Position the Validasi column next to the Nama Majelis column */
+    z-index: 1;
+    white-space: nowrap; /* Ensure Validasi has a lower z-index than Nama Majelis */
+  }
+  
+  .fixed-left + .fixed-left {
+    left: auto;
+  }
+  

@@ -1,0 +1,38 @@
+.pendaftaran-container {
+    margin-top: 50px;
+  }
+  
+  .pendaftaran-card {
+    border-radius: 10px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  }
+  .pendaftaran-image1 {
+    width: 55%;
+    margin: 20px auto 10px auto;
+  }
+  .pendaftaran-image2 {
+    width: 60%;
+    margin: 20px auto 10px auto;
+  }
+  
+  .pendaftaran-button {
+    background-color: #00330B;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 20px;
+  }
+  
+  .pendaftaran-button:hover {
+    background-color: #004716;
+  }
+  
+  .card-text {
+    font-size: 14px;
+    color: #555;
+  }
+  
+.status-button{
+    background-color: #00330B;
+    border-radius: 20px;
+}

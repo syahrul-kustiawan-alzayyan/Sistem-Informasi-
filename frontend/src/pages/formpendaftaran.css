@@ -1,0 +1,110 @@
+/* form-styles.css */
+
+/* Overall container styling */
+.pendaftaran-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Header styling */
+.pendaftaran-container h2 {
+  margin-bottom: 20px;
+  color: #000; /* Black color */
+}
+
+/* Fieldset styling */
+.fieldset {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+/* Legend styling */
+.fieldset legend {
+  font-weight: bold;
+  padding: 0 10px;
+  color: #000; /* Black color */
+}
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Form control styling */
+.form-control {
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Form control error feedback */
+.form-control.is-invalid {
+  border-color: #dc3545; /* Red color for errors */
+}
+
+/* Form control feedback styling */
+.form-control-feedback {
+  color: #dc3545; /* Red color for errors */
+  font-size: 0.875rem;
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: #000; /* Black color */
+  border-color: #000; /* Black color */
+  border-radius: 4px;
+}
+
+.btn-primary:hover {
+  background-color: #333; /* Darker black color on hover */
+  border-color: #333; /* Darker black color on hover */
+}
+
+/* Row and Column styling */
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-md-6 {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/* Select styling */
+.form-control[as="select"] {
+  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+}
+
+/* File input styling */
+.form-control[type="file"] {
+  padding: 3px 0;
+  margin-top: 10px; /* Margin added for file input */
+}
+
+/* Margin for file input fields */
+.form-group input[type="file"] {
+  margin-bottom: 15px; /* Margin added between file inputs */
+}
+
+/* Form label background color */
+.form-group label {
+  background-color: #e0e0e0; /* Light grey color */
+  padding: 8px;
+  border-radius: 4px;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .col-md-6 {
+    margin-bottom: 15px;
+  }
+}

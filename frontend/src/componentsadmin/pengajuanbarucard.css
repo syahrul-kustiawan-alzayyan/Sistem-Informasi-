@@ -1,0 +1,105 @@
+/* Styling untuk container filter */
+.filter-container {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: rgba(240, 240, 240, 0.9);
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container form {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-container input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Styling untuk kartu pengajuan baru */
+.pengajuanbaru-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.pengajuanbaru-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pengajuanbaru-card .card-header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.pengajuanbaru-card .card-body {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.pengajuanbaru-card .card-body p {
+  margin: 5px 0;
+}
+
+/* Styling untuk notifikasi */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #fff;
+  z-index: 1000;
+}
+
+.notification.success {
+  background-color: #28a745;
+}
+
+.notification.danger {
+  background-color: #dc3545;
+}
+
+/* Styling untuk modal */
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
+}
+
+.modal-body {
+  padding: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.modal-footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-footer .btn {
+  margin-left: 10px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .filter-container form {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

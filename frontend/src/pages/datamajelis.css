@@ -1,0 +1,14 @@
+.centered-title {
+    text-align: center; /* Meratakan teks secara horizontal */
+    margin: 20px 0; /* Memberikan margin atas dan bawah */
+    font-weight: bold;
+  }
+  
+  .container {
+    flex: 1; /* Membuat elemen mengambil seluruh ruang yang tersedia */
+    display: flex; /* Mengaktifkan flexbox */
+    flex-direction: column; /* Memastikan konten berada di kolom */
+    justify-content: center; /* Meratakan konten secara vertikal */
+    align-items: center; /* Meratakan konten secara horizontal */
+  }
+  
