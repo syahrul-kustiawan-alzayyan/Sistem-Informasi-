@@ -1,19 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
-import './sisteminformasi.css';
+import axios from "axios";
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import "./sisteminformasi.css";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 const SistemInformasi = () => {
   const [totalStatsMajelisTaklim, setTotalStatsMajelisTaklim] = useState(null);
   const [kecamatanStats, setKecamatanStats] = useState([]);
   const [majelisData, setMajelisData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterKecamatan, setFilterKecamatan] = useState('');
-  const [filterKelurahan, setFilterKelurahan] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterKecamatan, setFilterKecamatan] = useState("");
+  const [filterKelurahan, setFilterKelurahan] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -21,29 +36,33 @@ const SistemInformasi = () => {
   useEffect(() => {
     const fetchTotalStatsMajelisTaklim = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/stats/totalmajelistaklim');
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/stats/totalmajelistaklim`
+        );
         setTotalStatsMajelisTaklim(response.data);
       } catch (err) {
-        console.error('Error fetching total stats:', err);
+        console.error("Error fetching total stats:", err);
       }
     };
 
     const fetchKecamatanStats = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/stats/kecamatan');
+        const response = await axios.get(
+          "http://localhost:3002/stats/kecamatan"
+        );
         setKecamatanStats(response.data);
       } catch (err) {
-        console.error('Error fetching kecamatan stats:', err);
+        console.error("Error fetching kecamatan stats:", err);
       }
     };
 
     const fetchMajelisData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/majelistaklim');
+        const response = await axios.get("http://localhost:3002/majelistaklim");
         setMajelisData(response.data);
         setFilteredData(response.data);
       } catch (err) {
-        console.error('Error fetching majelis data:', err);
+        console.error("Error fetching majelis data:", err);
       }
     };
 
@@ -56,32 +75,34 @@ const SistemInformasi = () => {
     let data = majelisData;
 
     if (searchTerm) {
-      data = data.filter(item =>
+      data = data.filter((item) =>
         item.namaMajelis.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (filterKecamatan) {
-      data = data.filter(item => item.kecamatan === filterKecamatan);
+      data = data.filter((item) => item.kecamatan === filterKecamatan);
     }
 
     if (filterKelurahan) {
-      data = data.filter(item => item.kelurahan === filterKelurahan);
+      data = data.filter((item) => item.kelurahan === filterKelurahan);
     }
 
     setFilteredData(data);
   }, [searchTerm, filterKecamatan, filterKelurahan, majelisData]);
 
-  const kecamatanLabels = [...new Set(filteredData.map(item => item.kecamatan))];
+  const kecamatanLabels = [
+    ...new Set(filteredData.map((item) => item.kecamatan)),
+  ];
   const kecamatanCounts = kecamatanLabels.map(
-    kec => filteredData.filter(item => item.kecamatan === kec).length
+    (kec) => filteredData.filter((item) => item.kecamatan === kec).length
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="dashboard-container">
@@ -91,14 +112,14 @@ const SistemInformasi = () => {
           type="text"
           placeholder="Cari Nama Majelis Taklim"
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
           value={filterKecamatan}
-          onChange={e => setFilterKecamatan(e.target.value)}
+          onChange={(e) => setFilterKecamatan(e.target.value)}
         >
           <option value="">Kecamatan</option>
-          {kecamatanStats.map(kecamatan => (
+          {kecamatanStats.map((kecamatan) => (
             <option key={kecamatan._id} value={kecamatan._id}>
               {kecamatan._id}
             </option>
@@ -106,11 +127,11 @@ const SistemInformasi = () => {
         </select>
         <select
           value={filterKelurahan}
-          onChange={e => setFilterKelurahan(e.target.value)}
+          onChange={(e) => setFilterKelurahan(e.target.value)}
         >
           <option value="">Kelurahan</option>
-          {Array.from(new Set(majelisData.map(item => item.kelurahan))).map(
-            kelurahan => (
+          {Array.from(new Set(majelisData.map((item) => item.kelurahan))).map(
+            (kelurahan) => (
               <option key={kelurahan} value={kelurahan}>
                 {kelurahan}
               </option>
@@ -128,9 +149,9 @@ const SistemInformasi = () => {
                   labels: kecamatanLabels,
                   datasets: [
                     {
-                      label: 'Jumlah Majelis Taklim',
+                      label: "Jumlah Majelis Taklim",
                       data: kecamatanCounts,
-                      backgroundColor: '#032908',
+                      backgroundColor: "#032908",
                     },
                   ],
                 }}
@@ -161,7 +182,7 @@ const SistemInformasi = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map(item => (
+                {currentItems.map((item) => (
                   <tr key={item._id}>
                     <td>{item.namaMajelis}</td>
                     <td>{item.jumlahJamaah}</td>

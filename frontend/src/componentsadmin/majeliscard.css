@@ -102,3 +102,26 @@ html, body, #root {
   max-width: 1200px;
   margin: auto;
 }
+
+.certificate-container {
+  position: relative;
+  width: 1414px; /* Sesuaikan ukuran sesuai desain */
+  height: 2000px; /* Sesuaikan ukuran sesuai desain */
+  background-image: url('../assets/Sertifikat/sertifikat.png'); /* URL gambar sertifikat */
+  background-size: cover;
+  background-position: center;
+}
+
+.certificate-text {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-family: 'Arial, sans-serif';
+  color: #000; /* Warna teks */
+}
+
+.certificate-name {
+  top: 1000px; /* Atur jarak sesuai desain */
+  font-size: 24px;
+  font-weight: bold;
+}

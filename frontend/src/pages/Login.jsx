@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import { Form, Button, InputGroup, FormControl } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import logo from '../assets/KANTOR__2_-removebg-preview.png';
-import vector from '../assets/10545730-removebg-preview.png';
-import './login.css';
+import axios from "axios";
+import React, { useState } from "react";
+import { Button, Form, FormControl, InputGroup } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import vector from "../assets/10545730-removebg-preview.png";
+import logo from "../assets/KANTOR__2_-removebg-preview.png";
+import { FaSignOutAlt, FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons
+import "./login.css";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [popupMessage, setPopupMessage] = useState('');
-  const [popupType, setPopupType] = useState(''); // success or error
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupType, setPopupType] = useState(""); // success or error
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
@@ -19,8 +21,8 @@ const Login = () => {
     setPopupMessage(message);
     setPopupType(type);
     setTimeout(() => {
-      setPopupMessage('');
-      setPopupType('');
+      setPopupMessage("");
+      setPopupType("");
     }, 2000);
   };
 
@@ -28,35 +30,39 @@ const Login = () => {
     e.preventDefault();
 
     if (!username || !password) {
-      showPopup('Username dan password harus diisi!', 'error');
+      showPopup("Username dan password harus diisi!", "error");
       return;
     }
 
     axios
-      .post('http://localhost:3001/login', { username, password })
+      .post("http://localhost:3002/login", { username, password })
       .then((res) => {
-        if (res.data.Status === 'Sukses') {
-          showPopup('Login berhasil!', 'success');
+        if (res.data.Status === "Sukses") {
+          showPopup("Login berhasil!", "success");
           setTimeout(() => {
-            if (res.data.role === 'admin') {
-              navigate('/admin-dashboard');
+            if (res.data.role === "admin") {
+              navigate("/admin-dashboard");
             } else {
-              navigate('/');
+              navigate("/");
             }
           }, 2000);
         } else {
-          showPopup('Username atau password salah!', 'error');
+          showPopup("Username atau password salah!", "error");
         }
       })
       .catch((error) => console.error(error));
   };
 
+  // Logout function
+  const handleLogout = () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    navigate("/");
+  };
+
   return (
     <div className="login-page">
       {popupMessage && (
-        <div className={`popup ${popupType}`}>
-          {popupMessage}
-        </div>
+        <div className={`popup ${popupType}`}>{popupMessage}</div>
       )}
       <div className="login-container">
         <div className="login-card">
@@ -70,14 +76,18 @@ const Login = () => {
           </div>
           <div className="login-right">
             <h3>MASUK</h3>
-            <p>Selamat datang di aplikasi pengajuan majelis taklim kabupaten garut</p>
+            <p>
+              Selamat datang di aplikasi pengajuan majelis taklim kabupaten
+              garut
+            </p>
             <Form onSubmit={handleSubmit}>
+              {/* Username Input */}
               <InputGroup className="mb-3">
                 <InputGroup.Text id="username-addon">
-                  <i className="fas fa-user"></i>
+                  <FaUser />
                 </InputGroup.Text>
                 <FormControl
-                  placeholder="masukan username"
+                  placeholder="Masukan username"
                   aria-label="Username"
                   aria-describedby="username-addon"
                   value={username}
@@ -85,18 +95,26 @@ const Login = () => {
                 />
               </InputGroup>
 
+              {/* Password Input */}
               <InputGroup className="mb-3">
                 <InputGroup.Text id="password-addon">
-                  <i className="fas fa-lock"></i>
+                  <FaLock />
                 </InputGroup.Text>
                 <FormControl
-                  type="password"
-                  placeholder="masukan password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Masukan password"
                   aria-label="Password"
                   aria-describedby="password-addon"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <InputGroup.Text
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </InputGroup.Text>
               </InputGroup>
 
               <Button variant="success" type="submit" className="login-button">
@@ -108,6 +126,14 @@ const Login = () => {
                 Belum punya akun? <Link to="/register">daftar disini!</Link>
               </p>
             </div>
+            {/* Logout button */}
+            <Button
+              variant="danger"
+              className="logout-button"
+              onClick={handleLogout}
+            >
+              <FaSignOutAlt size={20} />
+            </Button>
           </div>
         </div>
       </div>

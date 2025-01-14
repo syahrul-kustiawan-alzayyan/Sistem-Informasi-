@@ -1,26 +1,26 @@
-import React from 'react';
-import './tabelpengajuanbaru.css';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { getMajelisTaklim } from '../redux/MajelisTaklimSlicer';
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMajelisTaklim } from "../redux/MajelisTaklimSlicer";
+import "./tabelpengajuanbaru.css";
 
 const MajelisTable = () => {
   const dispatch = useDispatch();
-  const MajelisTaklim = useSelector(state => state.MajelisTaklim.MajelisTaklim)
-  console.log(useSelector(state => state.MajelisTaklim.MajelisTaklim))
-  useEffect(()=>{
-    const fetchData = async ()=>{
+  const MajelisTaklim = useSelector(
+    (state) => state.MajelisTaklim.MajelisTaklim
+  );
+  console.log(useSelector((state) => state.MajelisTaklim.MajelisTaklim));
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/majelistaklim');
+        const response = await axios.get("http://localhost:3002/majelistaklim");
         dispatch(getMajelisTaklim(response.data));
-      } catch(err){
-          console.log(err)
+      } catch (err) {
+        console.log(err);
       }
-    }
+    };
     fetchData();
-  },[])
+  }, []);
 
   return (
     <div className="table-responsive table-container">
@@ -53,7 +53,6 @@ const MajelisTable = () => {
         </thead>
         <tbody>
           {MajelisTaklim.map((item, index) => (
-            
             <tr key={index}>
               <td className="fixed-left">{item.namaMajelis}</td>
               <td>{item.tanggal}</td>
@@ -70,83 +69,119 @@ const MajelisTable = () => {
               {/* PDF Columns with View Buttons */}
               <td>
                 {item.suratPermohonan ? (
-                  <a href={item.suratPermohonan} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.suratPermohonan}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.rekomendasiKUA ? (
-                  <a href={item.rekomendasiKUA} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.rekomendasiKUA}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.susunanKepengurusan ? (
-                  <a href={item.susunanKepengurusan} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.susunanKepengurusan}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.suratDomisili ? (
-                  <a href={item.suratDomisili} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.suratDomisili}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.daftarJamaah ? (
-                  <a href={item.daftarJamaah} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.daftarJamaah}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.ktpPengurus ? (
-                  <a href={item.ktpPengurus} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.ktpPengurus}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.ktpJamaah ? (
-                  <a href={item.ktpJamaah} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.ktpJamaah}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.aktaYayasan ? (
-                  <a href={item.aktaYayasan} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.aktaYayasan}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
               <td>
                 {item.proposalPengajuan ? (
-                  <a href={item.proposalPengajuan} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.proposalPengajuan}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button className="btn btn-info btn-sm">View</button>
                   </a>
                 ) : (
-                  'No File'
+                  "No File"
                 )}
               </td>
             </tr>

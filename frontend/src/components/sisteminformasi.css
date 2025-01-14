@@ -1,6 +1,8 @@
 .dashboard-container {
     padding: 1rem;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
   }
   
   .dashboard-title {
@@ -15,6 +17,7 @@
     display: flex;
     justify-content: center;
     margin-bottom: 1rem;
+    height: 1200px;
   }
   
   .stat-card {

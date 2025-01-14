@@ -1,19 +1,19 @@
 // src/redux/statusPengajuanSlice.js
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 // Action untuk mengambil data pengajuan
 export const fetchStatusPengajuan = createAsyncThunk(
-  'statusPengajuan/fetchStatusPengajuan',
+  "statusPengajuan/fetchStatusPengajuan",
   async () => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     if (!token) {
-      throw new Error('Token tidak ditemukan');
+      throw new Error("Token tidak ditemukan");
     }
 
-    const response = await axios.get('http://localhost:3001/status-pengajuan', {
+    const response = await axios.get("http://localhost:3002/status-pengajuan", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -24,7 +24,7 @@ export const fetchStatusPengajuan = createAsyncThunk(
 );
 
 const statusPengajuanSlicer = createSlice({
-  name: 'statusPengajuan',
+  name: "statusPengajuan",
   initialState: {
     data: [],
     loading: false,
@@ -48,5 +48,5 @@ const statusPengajuanSlicer = createSlice({
   },
 });
 
-export const {getStatusPengajuan} = statusPengajuanSlicer.actions;
+export const { getStatusPengajuan } = statusPengajuanSlicer.actions;
 export default statusPengajuanSlicer.reducer;

@@ -1,96 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react'; 
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-scroll';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/KANTOR-removebg-preview.png';
 import './navbar.css';
 
 function NavbarCom() {
-  const [changecolor, setchangecolor] = useState(false);
-  const navigate = useNavigate(); // Define useNavigate
-
-  const changeBackgroundColor = () => {
-    if (window.scrollY > 250) {
-      setchangecolor(true);
-    } else {
-      setchangecolor(false);
-    }
-  };
-
-  useEffect(() => {
-    changeBackgroundColor();
-    window.addEventListener('scroll', changeBackgroundColor);
-    return () => window.removeEventListener('scroll', changeBackgroundColor);
-  }, []);
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
     navigate('/login'); // Redirect to the login page when the button is clicked
   };
 
   return (
-    <div className="sticky-top">
-      <Navbar
-        variant="light"
-        expand="lg"
-        className={`py-3 ${changecolor ? 'color-active' : ''} navbar-custom`}
-      >
+    <div className="navbar-utama-sticky-top">
+      <Navbar variant="light" expand="lg" className="py-3 navbar-utama-custom">
         <Container>
-          {/* Navbar Brand - Logo */}
-          <Navbar.Brand href="/" className="navbar-brand-custom">
-            <img src={logo} alt="Logo" className="navbar-logo" />
+          <Navbar.Brand href="/" className="navbar-utama-brand-custom">
+            <img
+              src={logo}
+              alt="Logo"
+              className="navbar-utama-logo"
+            />
           </Navbar.Brand>
-          
-          {/* Navbar Toggler */}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-
-          {/* Navbar Navigation */}
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-            <Nav>
+            <Nav className="align-items-center">
               <Link
-                activeClass="active-link"
+                activeClass="navbar-utama-active-link"
                 to="home"
                 spy={true}
                 smooth={true}
                 offset={-70}
                 duration={500}
-                className="nav-link-custom"
+                className="navbar-utama-nav-link-custom mx-3"
               >
                 Beranda
               </Link>
               <Link
-                activeClass="active-link"
+                activeClass="navbar-utama-active-link"
                 to="alur"
                 spy={true}
                 smooth={true}
                 offset={-70}
                 duration={500}
-                className="nav-link-custom"
+                className="navbar-utama-nav-link-custom mx-3"
               >
                 Alur Pendaftaran
               </Link>
               <Link
-                activeClass="active-link"
+                activeClass="navbar-utama-active-link"
                 to="persyaratan"
                 spy={true}
                 smooth={true}
                 offset={-70}
                 duration={500}
-                className="nav-link-custom"
+                className="navbar-utama-nav-link-custom mx-3"
               >
                 Persyaratan
               </Link>
               <Link
-                activeClass="active-link"
+                activeClass="navbar-utama-active-link"
                 to="faq"
                 spy={true}
                 smooth={true}
                 offset={-70}
                 duration={500}
-                className="nav-link-custom"
+                className="navbar-utama-nav-link-custom mx-3"
               >
                 FAQ
               </Link>
-              <Button className="button" variant="success" onClick={handleLoginClick}>
+              <Button className='navbar-utama-button' variant="success" onClick={handleLoginClick}>
                 Masuk/Daftar
               </Button>
             </Nav>

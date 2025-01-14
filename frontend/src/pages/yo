@@ -134,7 +134,7 @@ function FormPendaftaranBaru() {
         'Content-Type': 'multipart/form-data',
       };
       
-      axios.post('http://localhost:3001/baru', submitData, { headers })
+      axios.post('http://localhost:3002/baru', submitData, { headers })
         .then((response) => {
           console.log(response.data);
           navigate('/success'); // Redirect to success page

@@ -1,0 +1,74 @@
+/* navbar.css */
+
+/* General styles for the navbar */
+.custom-navbar {
+    background-color: #ffffff; /* Solid white background */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px; /* Adds space below the navbar */
+  }
+  
+  .custom-navbar:hover {
+    background-color: #ffffff; /* No change on hover since it's already solid white */
+  }
+  
+  /* Logo styles */
+  .custom-logo {
+    cursor: pointer;
+    margin-right: 20px; /* Adds space between logo and links */
+  }
+  
+  .logo-image {
+    height: 50px;
+    width: auto;
+  }
+  
+  /* Nav links styles */
+  .custom-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 25px; /* Adds equal space between each nav item */
+  }
+  
+  .custom-nav-links .nav-link {
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    padding: 10px 15px; /* Adds padding around the links for better spacing */
+    border-radius: 5px; /* Rounded corners for a soft look */
+  }
+  
+  .custom-nav-links .nav-link:hover {
+    color: #034d26; /* Change color on hover */
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+  }
+  
+  /* Active section styling */
+  .custom-nav-links .active {
+    color: #034d26; /* Active section color */
+    border-bottom: 2px solid #034d26; /* Add an underline to indicate active page */
+    padding-bottom: 5px; /* Space for the underline */
+  }
+  
+  /* Login button styles */
+  .utama-custom-login-button {
+    background-color: #034d26;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    margin-left: 20px; /* Adds space between the button and nav links */
+  }
+  
+  .custom-login-button:hover {
+    background-color: #012914; /* Darker blue on hover */
+  }
+  

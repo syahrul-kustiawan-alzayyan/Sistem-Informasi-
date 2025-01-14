@@ -20,7 +20,7 @@
   width: 100%;
 }
 
-.home-button {
+.daftar-button {
   background-color: #00330B;
   border: none;
   position: absolute;
@@ -28,4 +28,20 @@
   left: 50%;
   transform: translateX(-50%);
   size: lg;
+}
+
+.modal-header{
+  background-color: #00330B;
+}
+
+.modal-title{
+  color: white;
+}
+
+.button-batal{
+  background-color: red;
+}
+
+.button-login{
+  background-color: rgba(0, 254, 59, 0.689);
 }

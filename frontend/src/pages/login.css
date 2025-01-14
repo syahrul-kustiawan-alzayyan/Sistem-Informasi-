@@ -162,4 +162,20 @@
   .popup.error {
     background-color: #dc3545;
   }
+
+  .logout-button {
+    background-color: #032908; /* Red background */
+    color: white;
+    border: none;
+    padding: 7px;
+    border-radius: 50%; /* Circular button */
+    position: absolute;
+    top: 30px; /* Position near the top */
+    right: 30px; /* Position near the right edge */
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+  }
   

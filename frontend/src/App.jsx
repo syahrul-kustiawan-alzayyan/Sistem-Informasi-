@@ -17,9 +17,6 @@ import StatusPengajuan from './components/StatusPengajuan';
 
 
 function App() {
-
-  
-
   return (
     <Router>
       <TransitionWrapper>
