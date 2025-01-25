@@ -12,6 +12,7 @@ function FormPendaftaranBaru() {
   const navigate = useNavigate();
   const [popupMessage, setPopupMessage] = useState("");
   const [popupType, setPopupType] = useState("");
+  
 
   const [formData, setFormData] = useState({
     tanggal: "",

@@ -509,11 +509,15 @@ app.get("/status-pengajuan/:userId", async (req, res) => {
       userId: new mongoose.Types.ObjectId(user.id),
     });
 
+    const dataMajelis = await MajelisTaklimModel.find({
+      userId: new mongoose.Types.ObjectId(user.id),
+    });
+
     const dataPengajuanPembaharuan = await PengajuanPembaharuanModel.find({
       userId: new mongoose.Types.ObjectId(user.id),
     });
 
-    if (dataPengajuan.length === 0 && dataPengajuanPembaharuan.length === 0) {
+    if (dataPengajuan.length === 0 && dataPengajuanPembaharuan.length === 0 && dataMajelis.length === 0)  {
       return res.status(404).json({ message: "Tidak ada data pengajuan" });
     }
 
@@ -550,7 +554,7 @@ app.put("/update-pengajuanpembaharuan/:id", async (req, res) => {
   const { id } = req.params;
   const { status, pesanPenolakan } = req.body;
   try {
-    const PengajuanPembaharuan = await PengajuanBaruPembaharuan.findById(id);
+    const PengajuanPembaharuan = await PengajuanPembaharuan.findById(id);
     if (!PengajuanPembaharuan)
       return res.status(404).json({ error: "Pengajuan not found" });
 

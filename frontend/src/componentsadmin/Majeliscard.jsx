@@ -83,7 +83,7 @@ const MajelisCard = () => {
     ...new Set(MajelisTaklim.map((item) => item.kelurahan)),
   ];
 
-  const generateCertificate = (namaMajelis) => {
+  const generateAndDownloadCertificate = (namaMajelis) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
@@ -94,24 +94,22 @@ const MajelisCard = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-      ctx.font = "30px Arial";
+      ctx.font = "50px Arial";
       ctx.fillStyle = "black";
       ctx.textAlign = "center";
       ctx.fillText(namaMajelis, canvas.width / 2, canvas.height / 2);
+
+      // Download the certificate
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `${namaMajelis}-sertifikat.png`;
+      link.click();
     };
 
     img.onerror = () => {
       console.error("Gagal memuat gambar sertifikat");
     };
-  };
-
-  const downloadCertificate = () => {
-    const canvas = canvasRef.current;
-    const dataUrl = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = `${selectedMajelis.namaMajelis}-sertifikat.png`;
-    link.click();
   };
 
   return (
@@ -299,10 +297,10 @@ const MajelisCard = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={() => generateCertificate(selectedMajelis.namaMajelis)}>
-            Generate Sertifikat
-          </Button>
-          <Button variant="success" onClick={downloadCertificate}>
+          <Button
+            variant="primary"
+            onClick={() => generateAndDownloadCertificate(selectedMajelis.namaMajelis)}
+          >
             Unduh Sertifikat
           </Button>
           <Button

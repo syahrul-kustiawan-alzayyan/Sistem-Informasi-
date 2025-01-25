@@ -17,7 +17,7 @@ const PengajuanPembaharuanCard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedPengajuanPembaharuan, setSelectedPengajuanPembaharuan] =
     useState(null);
-  const [rejectionReason, setRejectionReason] = useState("");
+  const [pesanPenolakan, setPesanPenolakan] = useState("");
   const [showRejectionModal, setShowRejectionModal] = useState(false);
 
   // State for notification modal
@@ -58,7 +58,7 @@ const PengajuanPembaharuanCard = () => {
       await axios.put(
         `http://localhost:3002/pengajuanpembaharuan/${selectedPengajuanPembaharuan._id}`,
         {
-          data: { status: "ditolak", pesanPenolakan: rejectionReason },
+          PengajuanPembaharuan: { status: "ditolak", pesanPenolakan: pesanPenolakan },
         }
       );
       setNotificationMessage("Data berhasil ditolak!");
@@ -70,7 +70,7 @@ const PengajuanPembaharuanCard = () => {
         setShowRejectionModal(false);
         setShowNotification(false);
         dispatch(removePengajuanBaru(selectedPengajuanPembaharuan._id));
-        setRejectionReason("");
+        setPesanPenolakan("");
         window.location.reload();
       }, 3000);
     } catch (err) {
@@ -303,8 +303,8 @@ const PengajuanPembaharuanCard = () => {
           <Form.Control
             as="textarea"
             rows={3}
-            value={rejectionReason}
-            onChange={(e) => setRejectionReason(e.target.value)}
+            value={pesanPenolakan}
+            onChange={(e) => setPesanPenolakan(e.target.value)}
             placeholder="Masukkan alasan penolakan"
           />
         </Modal.Body>

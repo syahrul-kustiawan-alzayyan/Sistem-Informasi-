@@ -6,6 +6,7 @@ import NavbarStatus from "./navbarstatus";
 const StatusPengajuan = () => {
   const [dataPengajuan, setDataPengajuan] = useState([]);
   const [dataPengajuanPembaharuan, setDataPengajuanPembaharuan] = useState([]);
+  const [dataMajelis, setDataMajelis] = useState([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -32,6 +33,7 @@ const StatusPengajuan = () => {
         );
         setDataPengajuan(response.data.dataPengajuan || []);
         setDataPengajuanPembaharuan(response.data.dataPengajuanPembaharuan || []);
+        setDataMajelis(response.data.dataMajelis || []);
       } catch (err) {
         setError("Gagal memuat data pengajuan");
       } finally {
@@ -67,7 +69,7 @@ const StatusPengajuan = () => {
                 <td>{pengajuan.namaPemohon}</td>
                 <td>{pengajuan.namaMajelis}</td>
                 <td>{pengajuan.status}</td>
-                <td>{pengajuan.pesanPenolakan || "Tidak ada"}</td>
+                <td>{pengajuan.pesanPenolakan }</td>
                 <td>{new Date(pengajuan.tanggal).toLocaleDateString()}</td>
               </tr>
             ))}
@@ -75,26 +77,34 @@ const StatusPengajuan = () => {
         </table>
       )}
       {dataPengajuanPembaharuan.length === 0 ? (
-        <div>Tidak ada data pengajuan pembaharuan</div>
+        <div></div>
       ) : (
         <table className="tabel-status" border="1" style={{ width: "100%", textAlign: "left" }}>
-          <thead>
-            <tr>
-              <th>Nama Pemohon</th>
-              <th>Nama Majelis</th>
-              <th>Status</th>
-              <th>Catatan</th>
-              <th>Tanggal Pembaharuan</th>
-            </tr>
-          </thead>
           <tbody>
             {dataPengajuanPembaharuan.map((pembaharuan) => (
               <tr key={pembaharuan._id}>
                 <td>{pembaharuan.namaPemohon}</td>
                 <td>{pembaharuan.namaMajelis}</td>
                 <td>{pembaharuan.status}</td>
-                <td>{pembaharuan.pesanPenolakan || "Tidak ada"}</td>
+                <td>{pembaharuan.pesanPenolakan}</td>
                 <td>{new Date(pembaharuan.tanggal).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {dataMajelis.length === 0 ? (
+        <div></div>
+      ) : (
+        <table className="tabel-status" border="1" style={{ width: "100%", textAlign: "left" }}>
+          <tbody>
+            {dataMajelis.map((majelistaklim) => (
+              <tr key={majelistaklim._id}>
+                <td>{majelistaklim.namaPemohon}</td>
+                <td>{majelistaklim.namaMajelis}</td>
+                <td>{majelistaklim.status}</td>
+                <td>{majelistaklim.pesanPenolakan}</td>
+                <td>{new Date(majelistaklim.tanggal).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>
