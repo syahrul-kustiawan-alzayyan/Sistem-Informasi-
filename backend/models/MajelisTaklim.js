@@ -24,8 +24,9 @@ const MajelisTaklimSchema = new mongoose.Schema({
   ktpJamaah: { type: String, required: true },
   aktaYayasan: { type: String, required: false },  // Made optional
   proposalPengajuan: { type: String, required: true },
-  status: { type: String, enum: ['pending', 'disetujui', 'ditolak'], default: 'pending' },
+  status: { type: String, enum: ['pending', 'disetujui', 'ditolak'], default: 'disetujui' },
   pesanPenolakan: { type: String, default: '' },
+  sertifikat: {type: String, required: false}
 });
 
 const MajelisTaklimModel = mongoose.model('MajelisTaklim', MajelisTaklimSchema);

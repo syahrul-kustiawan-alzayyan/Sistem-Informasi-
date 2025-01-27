@@ -44,10 +44,50 @@ const MajelisTaklimSlicer = createSlice({
                 (item) => item._id !== action.payload
             );
         },
+        uploadCertificateStart: (state) => {
+            state.loading = true;
+        },
+        uploadCertificateSuccess: (state, action) => {
+            // Perbarui data majelis setelah unggahan berhasil
+            const updatedMajelis = state.MajelisTaklim.map((MajelisTaklim) =>
+              MajelisTaklim._id === action.payload._id ? action.payload : MajelisTaklim
+            );
+            state.MajelisTaklim = updatedMajelis;
+            state.loading = false;
+            state.error = null;
+        },
+        uploadCertificateFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     },
 });
 
 
 
-export const { getMajelisTaklim, addMajelisTaklim, deleteMajelisTaklim } = MajelisTaklimSlicer.actions;
+export const { getMajelisTaklim, addMajelisTaklim, deleteMajelisTaklim,uploadCertificateStart,
+    uploadCertificateSuccess,
+    uploadCertificateFailure, } = MajelisTaklimSlicer.actions;
 export default MajelisTaklimSlicer.reducer;
+
+export const uploadCertificate = (_id, file) => async (dispatch) => {
+    dispatch(uploadCertificateStart());
+    try {
+      const formData = new FormData();
+      formData.append('sertifikat', file);
+  
+      const response = await axios.post(
+        `http://localhost:3002/majelistaklim/upload-sertifikat/${_id}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+  
+      dispatch(uploadCertificateSuccess(response.data)); // `response.data` harus mencakup objek majelis yang diperbarui
+    } catch (error) {
+      dispatch(uploadCertificateFailure(error.message));
+    }
+};

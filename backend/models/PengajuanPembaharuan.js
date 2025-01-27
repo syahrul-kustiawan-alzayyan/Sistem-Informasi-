@@ -28,5 +28,19 @@ const PengajuanPembaharuanSchema = new mongoose.Schema({
   pesanPenolakan: { type: String, default: '' },
 });
 
+// Middleware for validation before saving
+PengajuanPembaharuanSchema.pre('save', function(next) {
+  if (this.status === 'ditolak' && !this.pesanPenolakan) {
+    return next(new Error('Pesan Penolakan is required when status is "ditolak"'));
+  }
+
+  // If status is "disetujui", pesanPenolakan can be empty
+  if (this.status === 'disetujui') {
+    this.pesanPenolakan = '';
+  }
+
+  next();
+});
+
 const PengajuanPembaharuanModel = mongoose.model('Pengajuanpembaharuan', PengajuanPembaharuanSchema);
 module.exports = PengajuanPembaharuanModel;

@@ -51,37 +51,48 @@ const PengajuanBaruCard = () => {
       await axios.put(
         `http://localhost:3002/update-pengajuanbaru/${selectedPengajuanBaru._id}`,
         {
-          PengajuanBaru: { status: "ditolak", pesanPenolakan: pesanPenolakan },
+          status: "ditolak", // Perbaikan di sini: status dikirim langsung
+          pesanPenolakan: pesanPenolakan, // Pesan penolakan dikirim dengan benar
         }
       );
       setNotificationMessage("Data berhasil ditolak!");
       setNotificationVariant("success");
       setShowNotification(true);
-
+  
       setTimeout(() => {
         setShowModal(false);
         setShowRejectionModal(false);
         setShowNotification(false);
-        dispatch(PengajuanBaru(selectedPengajuanBaru._id));
-        setPesanPenolakan("");
-        window.location.reload();
+        dispatch(PengajuanBaru(selectedPengajuanBaru._id)); // Panggil pengajuan baru dengan id yang benar
+        setPesanPenolakan(""); // Reset pesan penolakan
+        window.location.reload(); // Reload halaman untuk memperbarui data
       }, 3000);
     } catch (err) {
       console.error("Error rejecting data:", err);
+      setNotificationMessage("Gagal menolak data!");
+      setNotificationVariant("danger");
+      setShowNotification(true);
+  
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
     }
   };
+  
 
   const handleApprove = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3002/majelistaklim",
-        selectedPengajuanBaru
+      console.log("Mengirim data:", { id: selectedPengajuanBaru._id, status: "disetujui" });
+      const updateStatusResponse = await axios.post(
+        "http://localhost:3002/updateStatus",
+        { id: selectedPengajuanBaru._id, status: "disetujui" } // Pastikan status dikirim sebagai "disetujui"
       );
-      if (response.status === 200) {
-        setNotificationMessage("Data berhasil dipindahkan ke Majelis Taklim!");
+  
+      if (updateStatusResponse.status === 200) {
+        setNotificationMessage("Status berhasil diperbarui menjadi disetujui!");
         setNotificationVariant("success");
         setShowNotification(true);
-
+  
         setTimeout(() => {
           setShowModal(false);
           setShowNotification(false);
@@ -90,15 +101,17 @@ const PengajuanBaruCard = () => {
       }
     } catch (err) {
       console.error("Error approving data:", err);
-      setNotificationMessage("Gagal memindahkan data ke Majelis Taklim!");
+      setNotificationMessage("Gagal memperbarui status pengajuan!");
       setNotificationVariant("danger");
       setShowNotification(true);
-
+  
       setTimeout(() => {
         setShowNotification(false);
       }, 3000);
     }
   };
+  
+  
 
   // Filter and Search Logic
   const filteredPengajuanBaru = PengajuanBaru.filter((item) => {

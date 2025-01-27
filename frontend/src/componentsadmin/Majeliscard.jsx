@@ -5,9 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteMajelisTaklim,
   getMajelisTaklim,
+  uploadCertificate,
+  uploadCertificateFailure,
+  uploadCertificateSuccess
 } from "../redux/MajelisTaklimSlicer";
 import certificateImage from "../assets/Sertifikat/sertifikat.png";
+import { ToastContainer, toast } from "react-toastify";
 import "./majeliscard.css";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const MajelisCard = () => {
   const dispatch = useDispatch();
@@ -16,12 +22,14 @@ const MajelisCard = () => {
   );
 
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete confirmation modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false); // State for delete confirmation modal
   const [selectedMajelis, setSelectedMajelis] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterKecamatan, setFilterKecamatan] = useState("");
   const [filterKelurahan, setFilterKelurahan] = useState("");
+  const [uploadFile, setUploadFile] = useState(null);
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -67,6 +75,41 @@ const MajelisCard = () => {
       console.error("Error deleting Majelis Taklim:", error);
     }
   };
+
+  const handleUploadCertificate = async () => {
+    if (!uploadFile) {
+      alert("Silakan pilih file untuk diunggah.");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("sertifikat", uploadFile);
+  
+    try {
+      dispatch(uploadCertificate()); // Tampilkan loading state
+      const response = await axios.post(
+        `http://localhost:3002/majelistaklim/upload-sertifikat/${selectedMajelis._id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+  
+      const updatedMajelis = response.data.data;
+      dispatch(uploadCertificateSuccess(updatedMajelis)); // Perbarui state Majelis Taklim di Redux
+  
+      toast.success(response.data.message || "Sertifikat berhasil diunggah.");
+      setShowUploadModal(false); // Tutup modal unggah
+      setTimeout(() => {
+        window.location.reload(); // Refresh halaman
+      }, 2000);
+    } catch (error) {
+      console.error("Gagal mengunggah sertifikat:", error);
+      dispatch(uploadCertificateFailure(error.message || "Terjadi kesalahan."));
+      toast.error("Terjadi kesalahan saat mengunggah sertifikat.");
+    }
+  };
+  
 
   const filteredMajelis = MajelisTaklim.filter((item) => {
     return (
@@ -293,10 +336,51 @@ const MajelisCard = () => {
               </div>
               {/* Canvas for certificate */}
               <canvas ref={canvasRef} width={1414} height={2000} style={{ display: "none" }}></canvas>
+              
             </>
           )}
         </Modal.Body>
         <Modal.Footer>
+        {selectedMajelis && selectedMajelis.sertifikat ? (
+                <Button
+                  variant="secondary"
+                  href={selectedMajelis.sertifikat}
+                  target="_blank"
+                >
+                  Lihat Sertifikat
+                </Button>
+              ) : (
+                <Button variant="primary" onClick={() => setShowUploadModal(true)}>
+                  Unggah Sertifikat
+                </Button>
+              )}
+          
+          {/* Modal untuk unggah sertifikat */}
+          <Modal show={showUploadModal} onHide={() => setShowUploadModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Unggah Sertifikat</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group controlId="formFileUpload" className="mb-3">
+                <Form.Label>Pilih File Sertifikat</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="application/pdf,image/*"
+                  onChange={(e) => setUploadFile(e.target.files[0])}
+                />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowUploadModal(false)}>
+                Batal
+              </Button>
+              <Button variant="primary" onClick={handleUploadCertificate}>
+                Unggah
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <ToastContainer position="top-right" autoClose={3000} />
+
           <Button
             variant="primary"
             onClick={() => generateAndDownloadCertificate(selectedMajelis.namaMajelis)}

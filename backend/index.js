@@ -232,6 +232,86 @@ app.post(
   }
 );
 
+app.post("/updateStatus", async (req, res) => {
+  try {
+    const { id, status } = req.body; // Mengambil id dan status dari request body
+
+    // Validasi ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.log("ID tidak valid:", id);
+      return res.status(400).json({ message: "ID tidak valid!" });
+    }
+
+    // Validasi status
+    const validStatuses = ["pending", "disetujui", "ditolak"];
+    if (!validStatuses.includes(status)) {
+      console.log("Status tidak valid:", status);
+      return res.status(400).json({ message: "Status tidak valid!" });
+    }
+
+    // Update status pengajuan
+    console.log("Mengupdate ID:", id, "Status:", status); // Log sebelum update
+    const updatedPengajuan = await PengajuanBaruModel.findByIdAndUpdate(
+      id,
+      { status }, // Mengupdate status
+      { new: true } // Mengembalikan dokumen setelah diupdate
+    );
+
+    if (!updatedPengajuan) {
+      console.log("Pengajuan tidak ditemukan:", id);
+      return res.status(404).json({ message: "Pengajuan tidak ditemukan!" });
+    }
+    if (status === "disetujui") {
+      const newEntry = new MajelisTaklimModel({
+        userId: updatedPengajuan.userId,
+        tanggal: updatedPengajuan.tanggal,
+        namaPemohon: updatedPengajuan.namaPemohon,
+        alamatPemohon: updatedPengajuan.alamatPemohon,
+        noHpPemohon: updatedPengajuan.noHpPemohon,
+        namaMajelis: updatedPengajuan.namaMajelis,
+        alamatMajelis: updatedPengajuan.alamatMajelis,
+        kecamatan: updatedPengajuan.kecamatan,
+        kelurahan: updatedPengajuan.kelurahan,
+        namaPimpinan: updatedPengajuan.namaPimpinan,
+        noHpPimpinan: updatedPengajuan.noHpPimpinan,
+        tahunBerdiri: updatedPengajuan.tahunBerdiri,
+        jumlahJamaah: updatedPengajuan.jumlahJamaah,
+        penyelenggara: updatedPengajuan.penyelenggara,
+        suratPermohonan: updatedPengajuan.suratPermohonan,
+        rekomendasiKUA: updatedPengajuan.rekomendasiKUA,
+        susunanKepengurusan: updatedPengajuan.susunanKepengurusan,
+        suratDomisili: updatedPengajuan.suratDomisili,
+        daftarJamaah: updatedPengajuan.daftarJamaah,
+        ktpPengurus: updatedPengajuan.ktpPengurus,
+        ktpJamaah: updatedPengajuan.ktpJamaah,
+        aktaYayasan: updatedPengajuan.aktaYayasan,
+        proposalPengajuan: updatedPengajuan.proposalPengajuan,
+        status: updatedPengajuan.status,
+        pesanPenolakan: updatedPengajuan.pesanPenolakan,
+      });
+
+    // Save the new data in MajelisTaklim
+      await newEntry.save();
+
+    // Delete the data from PengajuanBaru collection using the ID
+      await PengajuanBaruModel.findByIdAndDelete(updatedPengajuan._id); 
+    } 
+
+    // Log jika berhasil
+    console.log("Status berhasil diperbarui:", updatedPengajuan);
+
+    // Mengirimkan respons sukses
+    res.status(200).json({ 
+      message: `Status berhasil diperbarui menjadi ${status}!`,
+      data: updatedPengajuan 
+    });
+  } catch (err) {
+    console.error("Error updating status:", err.message, err.stack);
+    res.status(500).json({ message: "Gagal memperbarui status pengajuan!" });
+  }
+});
+
+
 app.post(
   "/pengajuanpembaharuan",
   upload.fields([
@@ -391,9 +471,20 @@ app.post("/approveMajelisTaklim", isAuthenticated, async (req, res) => {
   }
 });
 
-app.post("/majelistaklim", async (req, res) => {
+app.post("/pengajuanbaruterima", async (req, res) => {
   try {
     const selectedPengajuanBaru = req.body; // Assuming selectedPengajuanBaru is sent in the request body
+    // Update the status to 'Diterima' first
+    const updatedPengajuan = await PengajuanBaruModel.findByIdAndUpdate(
+      selectedPengajuanBaru._id, 
+      { status: "Diterima" }, 
+      { new: true } // This will return the updated document
+    );
+
+    // Check if update was successful
+    if (!updatedPengajuan) {
+      return res.status(404).json({ message: "Pengajuan tidak ditemukan!" });
+    }
 
     // Create a new entry in the MajelisTaklim collection
     const newEntry = new MajelisTaklimModel({
@@ -431,16 +522,20 @@ app.post("/majelistaklim", async (req, res) => {
     await PengajuanBaruModel.findByIdAndDelete(selectedPengajuanBaru._id);
 
     // Send success response
-    res.status(200).json({ message: "Data berhasil dipindahkan!" });
+    res.status(200).json({ message: "Data berhasil dipindahkan dan status diperbarui!" });
   } catch (err) {
     console.error("Error while moving data:", err);
-    res.status(500).json({ message: "Gagal memindahkan data!" });
+    res.status(500).json({ message: "Gagal memindahkan data dan memperbarui status!" });
   }
 });
 
 app.post("/majelistaklimbaru", async (req, res) => {
   try {
     const selectedPengajuanPembaharuan = req.body; // Assuming selectedPengajuanBaru is sent in the request body
+
+    await PengajuanPembaharuanModel.findByIdAndUpdate(selectedPengajuanPembaharuan._id, {
+      status: "Diterima",
+    });
 
     // Create a new entry in the MajelisTaklim collection
     const newEntry = new MajelisTaklimModel({
@@ -500,55 +595,79 @@ app.delete("/majelistaklim/:id", async (req, res) => {
   }
 });
 
-app.get("/status-pengajuan/:userId", async (req, res) => {
+app.get("/status-pengajuan", async (req, res) => {
   try {
-    const { userId } = req.params;
-    const user = await jwt.decode(userId);
-    // Mengambil data berdasarkan userId yang ada di request
+    const authHeader = req.headers.authorization;
+
+    // Validasi apakah header authorization ada
+    if (!authHeader) {
+      return res.status(401).json({ message: "Token tidak ditemukan" });
+    }
+
+    // Ekstrak token dari header
+    const token = authHeader.split(" ")[1];
+
+    // Verifikasi token
+    const decoded = jwt.verify(token, "secretkey"); // Ganti "SECRET_KEY" dengan kunci rahasia Anda
+
+    // Gunakan ID pengguna dari token yang terverifikasi
+    const userId = decoded.id;
+
+    // Query database menggunakan userId
     const dataPengajuan = await PengajuanBaruModel.find({
-      userId: new mongoose.Types.ObjectId(user.id),
+      userId: new mongoose.Types.ObjectId(userId),
     });
 
     const dataMajelis = await MajelisTaklimModel.find({
-      userId: new mongoose.Types.ObjectId(user.id),
+      userId: new mongoose.Types.ObjectId(userId),
     });
 
     const dataPengajuanPembaharuan = await PengajuanPembaharuanModel.find({
-      userId: new mongoose.Types.ObjectId(user.id),
+      userId: new mongoose.Types.ObjectId(userId),
     });
 
-    if (dataPengajuan.length === 0 && dataPengajuanPembaharuan.length === 0 && dataMajelis.length === 0)  {
-      return res.status(404).json({ message: "Tidak ada data pengajuan" });
+    // Validasi apakah data ditemukan
+    if (dataPengajuan.length === 0 && dataMajelis.length === 0 && dataPengajuanPembaharuan.length === 0) {
+      return res.status(404).json({ message: "Tidak ada data yang ditemukan" });
     }
 
-    if (dataPengajuan.length === 0) {
-      return res.status(404).json({ message: "Tidak ada data pengajuan" });
-    }
-
-    res.json({ dataPengajuan, dataPengajuanPembaharuan });
+    res.json({ dataPengajuan, dataPengajuanPembaharuan, dataMajelis });
   } catch (error) {
     console.error("Error fetching data:", error.message);
     res.status(500).json({ message: "Gagal mengambil data pengajuan" });
   }
 });
 
+
 app.put("/update-pengajuanbaru/:id", async (req, res) => {
   const { id } = req.params;
-  const { status, pesanPenolakan } = req.body;
+  const { status, pesanPenolakan } = req.body; // Pastikan status dan pesanPenolakan diterima dari request body
+  
   try {
+    // Mencari pengajuan berdasarkan ID
     const PengajuanBaru = await PengajuanBaruModel.findById(id);
     if (!PengajuanBaru)
       return res.status(404).json({ error: "Pengajuan not found" });
 
+    // Memperbarui status pengajuan
     PengajuanBaru.status = status;
-    if (status === "ditolak") PengajuanBaru.pesanPenolakan = pesanPenolakan;
+    
+    // Jika status ditolak, set pesan penolakan
+    if (status === "ditolak") {
+      PengajuanBaru.pesanPenolakan = pesanPenolakan;
+    }
+
+    // Simpan perubahan ke database
     await PengajuanBaru.save();
 
-    res.json({ message: "Pengajuan updated successfully" });
+    // Mengirimkan respons sukses
+    res.json({ message: "Pengajuan berhasil diperbarui" });
   } catch (error) {
-    res.status(400).json({ error: "Update failed" });
+    console.error("Error updating pengajuan:", error);
+    res.status(400).json({ error: "Update gagal!" });
   }
 });
+
 
 app.put("/update-pengajuanpembaharuan/:id", async (req, res) => {
   const { id } = req.params;
@@ -633,6 +752,99 @@ app.put("/pengajuanpembaharuan/:id", async (req, res) => {
   } catch (error) {
     console.error("Error updating Pengajuan Baru:", error);
     res.status(500).json({ message: "Error updating Pengajuan Baru", error });
+  }
+});
+
+const storagesertifikat = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/sertifikat"); // Folder tempat file disimpan
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`); // Penamaan file
+  },
+});
+
+const uploadsertifikat = multer({
+  storage: storagesertifikat,
+  limits: { fileSize: 5 * 1024 * 1024 }, // Maksimal 5MB
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ["application/pdf","image/jpeg", "image/png", "image/jpg"];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Hanya file PDF yang diizinkan!"));
+    }
+  },
+});
+
+app.post(
+  "/majelistaklim/upload-sertifikat/:id",
+  uploadsertifikat.single("sertifikat"),
+  async (req, res) => {
+    try {
+      const majelisId = req.params.id;
+
+      // Cek apakah file tersedia
+      if (!req.file) {
+        return res.status(400).json({ message: "File sertifikat tidak ditemukan." });
+      }
+
+      // Perbarui data di database
+      const updatedMajelis = await MajelisTaklimModel.findByIdAndUpdate(
+        majelisId,
+        { sertifikat: `/uploads/sertifikat/${req.file.filename}` }, // Simpan path file ke database
+        { new: true }
+      );
+
+      if (!updatedMajelis) {
+        return res.status(404).json({ message: "Majelis Taklim tidak ditemukan." });
+      }
+
+      res.status(200).json({
+        message: "Sertifikat berhasil diunggah.",
+        data: updatedMajelis,
+      });
+    } catch (error) {
+      console.error("Error mengunggah sertifikat:", error);
+      res.status(500).json({ message: "Terjadi kesalahan server." });
+    }
+  }
+);
+
+app.get('/download-sertifikat/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Cari data MajelisTaklim berdasarkan ID
+    const majelisTaklim = await MajelisTaklimModel.findById(id);
+    if (!majelisTaklim) {
+      return res.status(404).json({ message: "Majelis Taklim tidak ditemukan!" });
+    }
+
+    // Pastikan sertifikat ada dan tentukan path untuk mendownload
+    const sertifikatPath = majelisTaklim.sertifikat;
+    if (!sertifikatPath) {
+      return res.status(404).json({ message: "Sertifikat tidak ditemukan!" });
+    }
+
+    // Tentukan file path yang sesungguhnya di server
+    const filePath = path.join(__dirname, 'uploads', 'sertifikat', path.basename(sertifikatPath));
+
+    // Cek apakah file ada di server
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ message: "File sertifikat tidak ditemukan di server." });
+    }
+
+    // Tentukan header respons untuk download file
+    res.setHeader("Content-Disposition", `attachment; filename=${path.basename(filePath)}`);
+    res.setHeader("Content-Type", "application/octet-stream");
+
+    // Streaming file ke client untuk diunduh
+    fs.createReadStream(filePath).pipe(res);
+
+  } catch (error) {
+    console.error("Error fetching sertifikat:", error.message);
+    res.status(500).json({ message: "Terjadi kesalahan saat mengunduh sertifikat!" });
   }
 });
 

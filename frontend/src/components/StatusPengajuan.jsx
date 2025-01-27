@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import './statuspengajuan.css'
 import NavbarStatus from "./navbarstatus";
 
+
+
 const StatusPengajuan = () => {
   const [dataPengajuan, setDataPengajuan] = useState([]);
   const [dataPengajuanPembaharuan, setDataPengajuanPembaharuan] = useState([]);
@@ -19,6 +21,11 @@ const StatusPengajuan = () => {
 
   const userId = getCookie("token");
 
+  const downloadSertifikat = (id) => {
+    window.location.href = `http://localhost:3002/download-sertifikat/${id}`;
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       if (!userId) {
@@ -26,22 +33,28 @@ const StatusPengajuan = () => {
         setLoading(false);
         return;
       }
-
+    
       try {
         const response = await axios.get(
-          `http://localhost:3002/status-pengajuan/${userId}`
+          "http://localhost:3002/status-pengajuan",
+          {
+            headers: {
+              Authorization: `Bearer ${userId}`,
+            },
+          }
         );
+    
         setDataPengajuan(response.data.dataPengajuan || []);
         setDataPengajuanPembaharuan(response.data.dataPengajuanPembaharuan || []);
         setDataMajelis(response.data.dataMajelis || []);
-      } catch (err) {
-        setError("Gagal memuat data pengajuan");
+      } catch (error) {
+        setError("Terjadi kesalahan saat mengambil data.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchData();  
   }, [userId]);
 
   if (loading) return <div>Loading...</div>;
@@ -93,18 +106,38 @@ const StatusPengajuan = () => {
           </tbody>
         </table>
       )}
+      <h1>Data Majelis Taklim</h1>
       {dataMajelis.length === 0 ? (
-        <div></div>
+        <div> tidak ada data </div>
       ) : (
         <table className="tabel-status" border="1" style={{ width: "100%", textAlign: "left" }}>
+          <thead>
+            <tr>
+              <th>Nama Pemohon</th>
+              <th>Nama Majelis</th>
+              <th>Status</th>
+              <th>Tanggal Pengajuan</th>
+              <th>Sertifikat</th>
+            </tr>
+          </thead>
           <tbody>
-            {dataMajelis.map((majelistaklim) => (
-              <tr key={majelistaklim._id}>
-                <td>{majelistaklim.namaPemohon}</td>
-                <td>{majelistaklim.namaMajelis}</td>
-                <td>{majelistaklim.status}</td>
-                <td>{majelistaklim.pesanPenolakan}</td>
-                <td>{new Date(majelistaklim.tanggal).toLocaleDateString()}</td>
+            {dataMajelis.map((MajelisTaklim) => (
+              <tr key={MajelisTaklim._id}>
+                <td>{MajelisTaklim.namaPemohon}</td>
+                <td>{MajelisTaklim.namaMajelis}</td>
+                <td>{MajelisTaklim.status}</td>
+                <td>{new Date(MajelisTaklim.tanggal).toLocaleDateString()}</td>
+                <td>
+                <button
+                      style={{
+                        backgroundColor: MajelisTaklim.sertifikat ? 'green' : 'red',
+                        color: 'white',
+                      }}
+                      onClick={() => MajelisTaklim.sertifikat ? downloadSertifikat(MajelisTaklim._id) : null}
+                    >
+                      {MajelisTaklim.sertifikat ? 'Download Sertifikat' : 'Sertifikat belum ada'}
+                    </button>
+                </td>
               </tr>
             ))}
           </tbody>
